@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+
+
+<html>
+
+    <head>
+        <title>
+            movie search
+        </title>
+        <style>
+            .border{
+                margin:auto;
+                border: 1px solid black;
+            }
+            .search{
+                width:29%;
+                margin-bottom: 20px;
+            }
+
+            input,button{
+                height: 30px;
+            }
+            input{
+                width:80%;
+            }
+            img{
+                width: 250px;
+                height: 350px;
+            }
+            #main{
+                width: 80%;
+                display: grid;
+                grid-template-columns: repeat(4,20%);
+                grid-gap: 5%;
+                margin:auto;
+            }
+            
+            #main>div{
+                font-size: 20px;
+                text-align:center;
+                width: 250px;
+                height: 400px;
+                margin-left: 2.5%;
+            }
+            #main>div,main>img{
+                background-color: wheat;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <div class="border search">
+            <h1> SEARCH FOR MOVIE NAME</h1>
+            <input type="text" id="name" placeholder="Enter movie name">
+            <button onclick="getName()">SEARCH</button>
+        </div>
+        <div id="main"></div>
+
+    </body>
+
+</html>
+
+<script>
+
+    
+    async function getName(){
+
+        let main_div = document.getElementById("main");
+
+        main_div.innerHTML = null;
+
+        let title = document.getElementById("name").value;
+
+        let res = await fetch(`http://www.omdbapi.com/?apikey=bc478391&s=${title}&type=movie`);
+        let data = await res.json();
+        console.log('data:', data)
+
+
+        data.Search.map(function(el){
+
+            
+            let div = document.createElement("div");
+            div.setAttribute("class","border")
+
+            let name = document.createElement("div");
+            let date = document.createElement("div");
+            let image = document.createElement("img");
+
+            name.innerHTML = el.Title;
+            date.innerHTML = el.Year;
+            image.src = el.Poster;
+
+            div.append(name,date,image);
+            
+
+            main_div.append(div);
+
+        })
+        
+
+    }
+    // getName()
+
+</script>
